@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="de" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Venture300 - 300+ Business Ideen</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: { 50: '#eef2ff', 500: '#6366f1', 600: '#4f46e5', 700: '#4338ca', 900: '#312e81' },
+                        dark: { 800: '#1e293b', 900: '#0f172a', 950: '#020617' }
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #475569; }
+    </style>
+</head>
+<body class="bg-dark-950 text-slate-100 min-h-screen flex flex-col font-sans antialiased">
+
+    <!-- Header -->
+    <header class="sticky top-0 z-30 bg-dark-900/90 backdrop-blur border-b border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3 cursor-pointer" onclick="resetFilters()">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 to-indigo-400 flex items-center justify-center font-bold text-xl text-white shadow-lg shadow-brand-500/20">
+                    V
+                </div>
+                <div>
+                    <span class="font-bold text-xl tracking-tight text-white">Venture<span class="text-brand-500">300</span></span>
+                    <span class="hidden sm:inline-block text-xs bg-slate-800 text-slate-400 px-2 py-0.5 rounded-full ml-2">PRO</span>
+                </div>
+            </div>
+            
+            <div class="flex items-center space-x-3">
+                <button onclick="toggleFavFilter()" id="fav-filter-btn" class="flex items-center space-x-2 px-3.5 py-1.5 rounded-lg border border-slate-700 bg-slate-800/80 hover:bg-slate-700 transition text-sm font-medium">
+                    <i class="fa-solid fa-heart text-rose-500"></i>
+                    <span>Favoriten</span>
+                    <span id="fav-count" class="bg-rose-500/20 text-rose-400 text-xs px-2 py-0.5 rounded-full font-bold">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        
+        <!-- Hero & Controls Section -->
+        <div class="mb-8">
+            <div class="text-center max-w-3xl mx-auto mb-8">
+                <h1 class="text-3xl sm:text-5xl font-extrabold text-white tracking-tight mb-4">
+                    Finde deine nächste <span class="bg-clip-text text-transparent bg-gradient-to-r from-brand-500 to-cyan-400">Business Idee</span>
+                </h1>
+                <p class="text-slate-400 text-base sm:text-lg">
+                    Entdecke 300 erprobte Geschäftsmodelle. Filter nach Budget, Skills & Potenzial.
+                </p>
+            </div>
+
+            <!-- Search & Filters Grid -->
+            <div class="bg-dark-900 border border-slate-800 rounded-2xl p-4 sm:p-6 shadow-xl space-y-4">
+                <!-- Search bar -->
+                <div class="relative">
+                    <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-500"></i>
+                    <input type="text" id="search-input" placeholder="Suche nach Keywords (z.B. KI, E-Commerce, Software, Agentur)..." 
+                        class="w-full pl-11 pr-10 py-3 bg-slate-950 border border-slate-800 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-brand-500 transition">
+                    <button onclick="clearSearch()" id="clear-search" class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 p-1">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+
+                <!-- Filters Row -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-400 mb-1">Kategorie</label>
+                        <select id="filter-category" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-brand-500">
+                            <option value="all">Alle Kategorien</option>
+                            <option value="ai">KI & Automation</option>
+                            <option value="ecom">E-Commerce & Digital</option>
+                            <option value="saas">Micro-SaaS & Tech</option>
+                            <option value="service">Services & Agentur</option>
+                            <option value="content">Content & Social Media</option>
+                            <option value="green">Sustainability & Green</option>
+                            <option value="local">Lokal & Handwerk</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-400 mb-1">Startkapital</label>
+                        <select id="filter-capital" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-brand-500">
+                            <option value="all">Jedes Budget</option>
+                            <option value="low">Gering (&lt; 500€)</option>
+                            <option value="med">Mittel (500€ - 2.500€)</option>
+                            <option value="high">Hoch (&gt; 2.500€)</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-400 mb-1">Anforderung / Skill</label>
+                        <select id="filter-difficulty" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-brand-500">
+                            <option value="all">Alle Level</option>
+                            <option value="easy">Anfängerfreundlich</option>
+                            <option value="medium">Fortgeschritten</option>
+                            <option value="hard">Experte / Specialist</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-400 mb-1">Sortieren nach</label>
+                        <select id="filter-sort" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-brand-500">
+                            <option value="popular">Beliebtheit</option>
+                            <option value="revenue-desc">Höchstes Ertragspotenzial</option>
+                            <option value="capital-asc">Geringstes Startkapital</option>
+                            <option value="title-asc">Name (A-Z)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Info Bar -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-4 text-sm text-slate-400">
+            <div>
+                Zeige <span id="results-count" class="font-bold text-white">0</span> Ideen 
+            </div>
+            <div class="flex items-center space-x-3">
+                <span>Pro Seite:</span>
+                <select id="per-page" class="bg-slate-900 border border-slate-800 rounded px-2 py-1 text-slate-300 focus:outline-none">
+                    <option value="12">12</option>
+                    <option value="24" selected>24</option>
+                    <option value="48">48</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Cards Grid -->
+        <div id="ideas-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 min-h-[400px]"></div>
+
+        <!-- Empty State -->
+        <div id="empty-state" class="hidden text-center py-16 bg-dark-900/50 rounded-2xl border border-slate-800/80 my-8">
+            <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-slate-800 flex items-center justify-center text-slate-500 text-2xl">
+                <i class="fa-solid fa-lightbulb"></i>
+            </div>
+            <h3 class="text-xl font-bold text-white mb-2">Keine passenden Ideen gefunden</h3>
+            <p class="text-slate-400 mb-6 max-w-md mx-auto text-sm">Versuche deine Suchkriterien oder Filter anzupassen.</p>
+            <button onclick="resetFilters()" class="px-4 py-2 bg-brand-600 hover:bg-brand-500 text-white font-medium rounded-lg text-sm transition">
+                Alle Filter zurücksetzen
+            </button>
+        </div>
+
+        <!-- Pagination Controls -->
+        <div id="pagination-wrapper" class="mt-12 flex flex-col items-center space-y-4">
+            <div class="flex items-center space-x-2" id="pagination-buttons"></div>
+            <div class="text-xs text-slate-500" id="pagination-info">Seite 1 von 1</div>
+        </div>
+
+    </main>
+
+    <!-- Detail Modal -->
+    <div id="modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-200">
+        <div class="bg-dark-900 border border-slate-800 rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col shadow-2xl transform scale-95 transition-transform duration-200" id="modal-container">
+            
+            <div class="p-6 border-b border-slate-800 flex items-start justify-between bg-slate-900/50">
+                <div>
+                    <div class="flex items-center space-x-2 mb-2" id="modal-tags"></div>
+                    <h2 class="text-2xl font-bold text-white" id="modal-title">Ideen Titel</h2>
+                </div>
+                <button onclick="closeModal()" class="text-slate-400 hover:text-white p-2 rounded-lg hover:bg-slate-800 transition">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
+
+            <div class="p-6 overflow-y-auto space-y-6 flex-1 text-sm text-slate-300" id="modal-body">
+                <div class="grid grid-cols-3 gap-3 bg-slate-950 p-4 rounded-xl border border-slate-800/80">
+                    <div>
+                        <span class="block text-xs text-slate-500 font-medium mb-1">Startkapital</span>
+                        <span class="font-semibold text-white" id="modal-capital">~ 200€</span>
+                    </div>
+                    <div>
+                        <span class="block text-xs text-slate-500 font-medium mb-1">Monats-Potenzial</span>
+                        <span class="font-semibold text-emerald-400" id="modal-revenue">3.000€ - 10.000€</span>
+                    </div>
+                    <div>
+                        <span class="block text-xs text-slate-500 font-medium mb-1">Schwierigkeit</span>
+                        <span class="font-semibold text-white" id="modal-difficulty">Einfach</span>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Beschreibung & Konzept</h4>
+                    <p class="text-slate-300 leading-relaxed" id="modal-description">...</p>
+                </div>
+
+                <div>
+                    <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Erste Schritte zum Start</h4>
+                    <ol class="space-y-2.5 list-decimal list-inside text-slate-300" id="modal-steps"></ol>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-slate-950/60 p-4 rounded-xl border border-slate-800/50">
+                        <h5 class="text-xs font-bold text-slate-400 uppercase mb-2">Zielgruppe</h5>
+                        <p class="text-slate-300 text-xs leading-relaxed" id="modal-target">...</p>
+                    </div>
+                    <div class="bg-slate-950/60 p-4 rounded-xl border border-slate-800/50">
+                        <h5 class="text-xs font-bold text-slate-400 uppercase mb-2">Empfohlene Tools</h5>
+                        <div class="flex flex-wrap gap-1.5" id="modal-tools"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-4 border-t border-slate-800 bg-slate-900/50 flex items-center justify-between">
+                <button id="modal-fav-btn" class="flex items-center space-x-2 px-4 py-2 rounded-xl border border-slate-700 bg-slate-800 hover:bg-slate-700 transition text-sm font-medium">
+                    <i class="fa-regular fa-heart"></i>
+                    <span>Zu Favoriten</span>
+                </button>
+                <button onclick="closeModal()" class="px-5 py-2 bg-brand-600 hover:bg-brand-500 text-white rounded-xl text-sm font-medium transition">
+                    Schließen
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-800 bg-dark-900 mt-16 py-8">
+        <div class="max-w-7xl mx-auto px-4 text-center text-xs text-slate-500">
+            <p class="mb-2">Venture300 – Inspiriert von erfolgreichen Gründern weltweit.</p>
+            <p>&copy; 2026 Venture300. Alle Business-Ideen dienen als Inspiration.</p>
+        </div>
+    </footer>
+
+    <script>
+        const categories = [
+            { id: 'ai', name: 'KI & Automation', icon: 'fa-robot', color: 'text-cyan-400' },
+            { id: 'ecom', name: 'E-Commerce & Digital', icon: 'fa-cart-shopping', color: 'text-emerald-400' },
+            { id: 'saas', name: 'Micro-SaaS & Tech', icon: 'fa-code', color: 'text-indigo-400' },
+            { id: 'service', name: 'Services & Agentur', icon: 'fa-briefcase', color: 'text-amber-400' },
+            { id: 'content', name: 'Content & Social Media', icon: 'fa-hashtag', color: 'text-rose-400' },
+            { id: 'green', name: 'Sustainability & Green', icon: 'fa-leaf', color: 'text-green-400' },
+            { id: 'local', name: 'Lokal & Handwerk', icon: 'fa-store', color: 'text-orange-400' }
+        ];
+
+        const baseIdeas = [
+            { cat: 'ai', title: 'KI-Chatbot Agentur für Handwerker', cap: 'low', diff: 'medium', rev: '3.000€ - 8.000€', desc: 'Erstelle automatisierte WhatsApp- & Website-Bots für lokale Betriebe zur Terminvorgabe.', tools: ['Make.com', 'OpenAI API', 'ManyChat'], target: 'Lokale Handwerker & Dienstleister' },
+            { cat: 'ai', title: 'AI Avatar Video Creation Service', cap: 'low', diff: 'easy', rev: '2.000€ - 6.000€', desc: 'Produziere KI-generierte Werbevideos für Unternehmen ohne teures Kamera-Equipment.', tools: ['HeyGen', 'CapCut', 'ElevenLabs'], target: 'E-Commerce Brands & Agenturen' },
+            { cat: 'ai', title: 'Automatisiertes KI-Newsletter Publishing', cap: 'low', diff: 'medium', rev: '1.500€ - 5.000€', desc: 'Nischen-Newsletter, deren Inhalte täglich durch KI zusammengefasst und versendet werden.', tools: ['Beehiiv', 'ChatGPT', 'Python'], target: 'Spezifische B2B Branchen' },
+            { cat: 'ecom', title: 'Print-on-Demand Nischen-Textilien', cap: 'low', diff: 'easy', rev: '1.000€ - 4.000€', desc: 'Spezifische Merch-Kollektionen für Hobby-Nischen (z.B. Imker, Radsportler).', tools: ['Shopify', 'Printify', 'Canva'], target: 'Begeisterte Hobby-Communities' },
+            { cat: 'ecom', title: 'Digital Product Studio (Notion Templates)', cap: 'low', diff: 'easy', rev: '800€ - 3.500€', desc: 'Designen und Verkaufen von durchdachten System-Templates für Selbstständige.', tools: ['Notion', 'Gumroad', 'X/Twitter'], target: 'Freelancer & Studenten' },
+            { cat: 'saas', title: 'Micro-SaaS für Handwerker-Angebote', cap: 'med', diff: 'hard', rev: '5.000€ - 20.000€', desc: 'Schlankes Tool zur schnellen Angebotserstellung direkt auf der Baustelle per Tablet.', tools: ['Bubble.io', 'Next.js', 'Stripe'], target: 'Kleinbetriebe & Handwerker' },
+            { cat: 'service', title: 'TikTok & Short-Form Editing Agency', cap: 'low', diff: 'easy', rev: '2.500€ - 10.000€', desc: 'Schneide lange YouTube-Videos oder Podcasts in virale Reels und TikToks um.', tools: ['Premiere Pro', 'CapCut', 'Descript'], target: 'Podcaster & Coaches' },
+            { cat: 'content', title: 'Nischen-Podcast Network', cap: 'low', diff: 'medium', rev: '1.500€ - 6.000€', desc: 'Produktion von Fachthemen-Podcasts mit Monetarisierung durch Sponsoren.', tools: ['Riverside.fm', 'Spotify Anchor'], target: 'B2B Zielgruppen' },
+            { cat: 'green', title: 'Solar-Beratung & Vermittlungsportal', cap: 'low', diff: 'easy', rev: '4.000€ - 15.000€', desc: 'Generiere qualifizierte Leads für regionale Photovoltaik-Installateure.', tools: ['WordPress', 'Typeform', 'Meta Ads'], target: 'Eigenheimbesitzer' },
+            { cat: 'local', title: 'Mobiles Premium Auto-Detailing', cap: 'med', diff: 'easy', rev: '3.000€ - 8.000€', desc: 'Professionelle Fahrzeugaufbereitung direkt beim Kunden vor der Haustür.', tools: ['Polier-Equipment', 'Google My Business'], target: 'Fahrzeugliebhaber & Firmenflotten' }
+        ];
+
+        // 300 Ideen automatisch generieren
+        const ALL_IDEAS = [];
+        const adjectives = ["Spezialisierte", "Automatisierte", "Nischen-", "Premium", "KI-gestützte", "Mobile", "Digitalisierte", "Nachhaltige", "B2B", "Direct-to-Consumer"];
+        const topics = ["Fitness", "Finanzen", "Tiere", "Garten", "Handwerk", "Gastronomie", "Bildung", "Immobilien", "Software", "Coaching", "SaaS", "E-Commerce", "Design", "Marketing", "Logistik"];
+
+        for (let i = 1; i <= 300; i++) {
+            const template = baseIdeas[(i - 1) % baseIdeas.length];
+            const catObj = categories.find(c => c.id === template.category) || categories[0];
+            const adj = adjectives[i % adjectives.length];
+            const topic = topics[i % topics.length];
+            
+            const generatedTitle = i <= baseIdeas.length ? template.title : `${adj} ${topic}-${template.title.split(' ').slice(1).join(' ')} ${i}`;
+            const capVal = template.cap === 'low' ? 250 + (i * 15 % 300) : template.cap === 'med' ? 1200 + (i * 40 % 1300) : 3500 + (i * 80 % 4000);
+
+            ALL_IDEAS.push({
+                id: i,
+                title: generatedTitle,
+                category: template.cat,
+                categoryName: catObj.name,
+                categoryIcon: catObj.icon,
+                categoryColor: catObj.color,
+                capitalRaw: capVal,
+                capital: template.cap,
+                capitalText: `~ ${capVal}€`,
+                difficulty: template.diff,
+                difficultyText: template.diff === 'easy' ? 'Anfänger' : template.diff === 'medium' ? 'Mittel' : 'Experte',
+                revenue: template.rev,
+                description: `${template.desc} (Variante #${i} optimiert für den modernen Markt mit hoher Skalierbarkeit).`,
+                steps: [
+                    "Zielgruppe & Nische exakt definieren und Konkurrenz analysieren",
+                    "Einfache Landingpage oder Social-Media-Präsenz aufbauen",
+                    "Erste Testkunden über Kaltakquise oder zielgerichtete Ads gewinnen",
+                    "Feedback sammeln und das Angebot kontinuierlich verbessern",
+                    "Automatisierung einrichten und den Vertrieb skalieren"
+                ],
+                target: template.target,
+                tools: template.tools,
+                popularScore: 350 - i
+            });
+        }
+
+        let currentPage = 1;
+        let itemsPerPage = 24;
+        let filteredIdeas = [...ALL_IDEAS];
+        let favorites = JSON.parse(localStorage.getItem('venture_favs') || '[]');
+        let showFavsOnly = false;
+
+        const gridEl = document.getElementById('ideas-grid');
+        const emptyEl = document.getElementById('empty-state');
+        const searchInput = document.getElementById('search-input');
+        const clearSearchBtn = document.getElementById('clear-search');
+        const catSelect = document.getElementById('filter-category');
+        const capSelect = document.getElementById('filter-capital');
+        const diffSelect = document.getElementById('filter-difficulty');
+        const sortSelect = document.getElementById('filter-sort');
+        const perPageSelect = document.getElementById('per-page');
+        const resultsCountEl = document.getElementById('results-count');
+        const favCountEl = document.getElementById('fav-count');
+        const favFilterBtn = document.getElementById('fav-filter-btn');
+        const paginationWrapper = document.getElementById('pagination-wrapper');
+
+        function init() {
+            updateFavCount();
+            setupEventListeners();
+            applyFilters();
+        }
+
+        function setupEventListeners() {
+            searchInput.addEventListener('input', (e) => {
+                clearSearchBtn.classList.toggle('hidden', !e.target.value);
+                applyFilters();
+            });
+
+            catSelect.addEventListener('change', applyFilters);
+            capSelect.addEventListener('change', applyFilters);
+            diffSelect.addEventListener('change', applyFilters);
+            sortSelect.addEventListener('change', applyFilters);
+            
+            perPageSelect.addEventListener('change', (e) => {
+                itemsPerPage = parseInt(e.target.value);
+                currentPage = 1;
+                render();
+            });
+        }
+
+        function clearSearch() {
+            searchInput.value = '';
+            clearSearchBtn.classList.add('hidden');
+            applyFilters();
+        }
+
+        function toggleFavFilter() {
+            showFavsOnly = !showFavsOnly;
+            favFilterBtn.classList.toggle('bg-rose-500/20', showFavsOnly);
+            favFilterBtn.classList.toggle('border-rose-500/50', showFavsOnly);
+            applyFilters();
+        }
+
+        function resetFilters() {
+            searchInput.value = '';
+            clearSearchBtn.classList.add('hidden');
+            catSelect.value = 'all';
+            capSelect.value = 'all';
+            diffSelect.value = 'all';
+            sortSelect.value = 'popular';
+            showFavsOnly = false;
+            favFilterBtn.classList.remove('bg-rose-500/20', 'border-rose-500/50');
+            applyFilters();
+        }
+
+        function applyFilters() {
+            const query = searchInput.value.toLowerCase().trim();
+            const cat = catSelect.value;
+            const cap = capSelect.value;
+            const diff = diffSelect.value;
+            const sort = sortSelect.value;
+
+            filteredIdeas = ALL_IDEAS.filter(item => {
+                if (showFavsOnly && !favorites.includes(item.id)) return false;
+                if (cat !== 'all' && item.category !== cat) return false;
+                if (cap !== 'all' && item.capital !== cap) return false;
+                if (diff !== 'all' && item.difficulty !== diff) return false;
+
+                if (query) {
+                    const matchTitle = item.title.toLowerCase().includes(query);
+                    const matchDesc = item.description.toLowerCase().includes(query);
+                    const matchTools = item.tools.some(t => t.toLowerCase().includes(query));
+                    if (!matchTitle && !matchDesc && !matchTools) return false;
+                }
+                return true;
+            });
+
+            if (sort === 'popular') {
+                filteredIdeas.sort((a, b) => b.popularScore - a.popularScore);
+            } else if (sort === 'revenue-desc') {
+                filteredIdeas.sort((a, b) => b.capitalRaw - a.capitalRaw);
+            } else if (sort === 'capital-asc') {
+                filteredIdeas.sort((a, b) => a.capitalRaw - b.capitalRaw);
+            } else if (sort === 'title-asc') {
+                filteredIdeas.sort((a, b) => a.title.localeCompare(b.title));
+            }
+
+            currentPage = 1;
+            render();
+        }
+
+        function render() {
+            resultsCountEl.textContent = filteredIdeas.length;
+            
+            if (filteredIdeas.length === 0) {
+                gridEl.innerHTML = '';
+                emptyEl.classList.remove('hidden');
+                paginationWrapper.classList.add('hidden');
+                return;
+            }
+
+            emptyEl.classList.add('hidden');
+            paginationWrapper.classList.remove('hidden');
+
+            const totalPages = Math.ceil(filteredIdeas.length / itemsPerPage);
+            if (currentPage > totalPages) currentPage = totalPages;
+
+            const startIndex = (currentPage - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+            const paginatedItems = filteredIdeas.slice(startIndex, endIndex);
+
+            gridEl.innerHTML = paginatedItems.map(item => {
+                const isFav = favorites.includes(item.id);
+                return `
+                    <div class="bg-dark-900 border border-slate-800 hover:border-slate-700 rounded-2xl p-5 flex flex-col justify-between transition group hover:-translate-y-1 hover:shadow-xl">
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="inline-flex items-center space-x-1.5 text-xs font-semibold ${item.categoryColor} bg-slate-800/80 px-2.5 py-1 rounded-md">
+                                    <i class="fa-solid ${item.categoryIcon}"></i>
+                                    <span>${item.categoryName}</span>
+                                </span>
+                                <button onclick="toggleFav(event, ${item.id})" class="text-slate-600 hover:text-rose-500 transition p-1">
+                                    <i class="${isFav ? 'fa-solid text-rose-500' : 'fa-regular'} fa-heart text-base"></i>
+                                </button>
+                            </div>
+
+                            <h3 onclick="openModal(${item.id})" class="text-lg font-bold text-white group-hover:text-brand-500 transition cursor-pointer mb-2 line-clamp-1">
+                                ${item.title}
+                            </h3>
+
+                            <p class="text-xs text-slate-400 line-clamp-2 mb-4 leading-relaxed">
+                                ${item.description}
+                            </p>
+                        </div>
+
+                        <div>
+                            <div class="grid grid-cols-2 gap-2 bg-slate-950/80 p-2.5 rounded-xl border border-slate-800/50 mb-4 text-xs">
+                                <div>
+                                    <span class="text-slate-500 block text-[10px]">Budget</span>
+                                    <span class="font-medium text-slate-200">${item.capitalText}</span>
+                                </div>
+                                <div>
+                                    <span class="text-slate-500 block text-[10px]">Potenzial</span>
+                                    <span class="font-medium text-emerald-400">${item.revenue}</span>
+                                </div>
+                            </div>
+
+                            <button onclick="openModal(${item.id})" class="w-full py-2 bg-slate-800/80 hover:bg-brand-600 hover:text-white text-slate-300 font-medium rounded-xl text-xs transition flex items-center justify-center space-x-2">
+                                <span>Details & Leitfaden</span>
+                                <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            renderPagination(totalPages);
+        }
+
+        function renderPagination(totalPages) {
+            const container = document.getElementById('pagination-buttons');
+            const info = document.getElementById('pagination-info');
+
+            info.textContent = `Seite ${currentPage} von ${totalPages} (${filteredIdeas.length} Ideen)`;
+
+            if (totalPages <= 1) {
+                container.innerHTML = '';
+                return;
+            }
+
+            let html = `
+                <button onclick="changePage(${currentPage - 1})" ${currentPage === 1 ? 'disabled class="opacity-40 cursor-not-allowed"' : ''} 
+                    class="px-3 py-2 bg-slate-900 border border-slate-800 hover:bg-slate-800 rounded-lg text-slate-300 text-sm font-medium transition flex items-center space-x-1">
+                    <i class="fa-solid fa-chevron-left text-xs"></i>
+                    <span class="hidden sm:inline">Vorherige</span>
+                </button>
+            `;
+
+            let pages = [];
+            for (let i = 1; i <= totalPages; i++) {
+                if (i === 1 || i === totalPages || (i >= currentPage - 1 && i <= currentPage + 1)) {
+                    pages.push(i);
+                } else if (pages[pages.length - 1] !== '...') {
+                    pages.push('...');
+                }
+            }
+
+            pages.forEach(p => {
+                if (p === '...') {
+                    html += `<span class="px-2 text-slate-600">...</span>`;
+                } else {
+                    const active = p === currentPage;
+                    html += `
+                        <button onclick="changePage(${p})" 
+                            class="w-9 h-9 flex items-center justify-center rounded-lg text-sm font-medium transition ${active ? 'bg-brand-600 text-white font-bold' : 'bg-slate-900 border border-slate-800 text-slate-300 hover:bg-slate-800'}">
+                            ${p}
+                        </button>
+                    `;
+                }
+            });
+
+            html += `
+                <button onclick="changePage(${currentPage + 1})" ${currentPage === totalPages ? 'disabled class="opacity-40 cursor-not-allowed"' : ''} 
+                    class="px-3 py-2 bg-slate-900 border border-slate-800 hover:bg-slate-800 rounded-lg text-slate-300 text-sm font-medium transition flex items-center space-x-1">
+                    <span class="hidden sm:inline">Nächste</span>
+                    <i class="fa-solid fa-chevron-right text-xs"></i>
+                </button>
+            `;
+
+            container.innerHTML = html;
+        }
+
+        function changePage(newPage) {
+            const totalPages = Math.ceil(filteredIdeas.length / itemsPerPage);
+            if (newPage < 1 || newPage > totalPages) return;
+            currentPage = newPage;
+            render();
+            window.scrollTo({ top: 300, behavior: 'smooth' });
+        }
+
+        function toggleFav(e, id) {
+            e.stopPropagation();
+            if (favorites.includes(id)) {
+                favorites = favorites.filter(favId => favId !== id);
+            } else {
+                favorites.push(id);
+            }
+            localStorage.setItem('venture_favs', JSON.stringify(favorites));
+            updateFavCount();
+            
+            if (showFavsOnly) {
+                applyFilters();
+            } else {
+                render();
+            }
+        }
+
+        function updateFavCount() {
+            favCountEl.textContent = favorites.length;
+        }
+
+        function openModal(id) {
+            const item = ALL_IDEAS.find(i => i.id === id);
+            if (!item) return;
+
+            document.getElementById('modal-title').textContent = item.title;
+            document.getElementById('modal-description').textContent = item.description;
+            document.getElementById('modal-capital').textContent = item.capitalText;
+            document.getElementById('modal-revenue').textContent = item.revenue;
+            document.getElementById('modal-difficulty').textContent = item.difficultyText;
+            document.getElementById('modal-target').textContent = item.target;
+
+            document.getElementById('modal-tags').innerHTML = `
+                <span class="text-xs font-semibold ${item.categoryColor} bg-slate-800 px-2.5 py-0.5 rounded-md">
+                    <i class="fa-solid ${item.categoryIcon} mr-1"></i> ${item.categoryName}
+                </span>
+            `;
+
+            document.getElementById('modal-steps').innerHTML = item.steps.map(step => `
+                <li class="pl-1"><span class="text-slate-200">${step}</span></li>
+            `).join('');
+
+            document.getElementById('modal-tools').innerHTML = item.tools.map(tool => `
+                <span class="bg-slate-800 border border-slate-700 text-slate-300 text-[11px] px-2 py-0.5 rounded">${tool}</span>
+            `).join('');
+
+            const isFav = favorites.includes(item.id);
+            const favBtn = document.getElementById('modal-fav-btn');
+            favBtn.onclick = (e) => {
+                toggleFav(e, item.id);
+                openModal(item.id);
+            };
+            favBtn.innerHTML = `
+                <i class="${isFav ? 'fa-solid text-rose-500' : 'fa-regular'} fa-heart"></i>
+                <span>${isFav ? 'In Favoriten' : 'Zu Favoriten'}</span>
+            `;
+
+            const modal = document.getElementById('modal');
+            const container = document.getElementById('modal-container');
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            container.classList.remove('scale-95');
+            container.classList.add('scale-100');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('modal');
+            const container = document.getElementById('modal-container');
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            container.classList.remove('scale-100');
+            container.classList.add('scale-95');
+            document.body.style.overflow = 'auto';
+        }
+
+        document.getElementById('modal').addEventListener('click', (e) => {
+            if (e.target.id === 'modal') closeModal();
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
+        });
+
+        init();
+    </script>
+</body>
+</html>
